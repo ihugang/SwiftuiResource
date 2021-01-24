@@ -7,6 +7,7 @@ SwiftUI 学习资料整理
 父视图 ==> 子视图 单向，使用初始化方法。
 祖先视图 ==> 子孙视图 双向，使用Environment，本质是应用范围内的字典对象。
 
+让我们看看如何将图像缓存注入环境。它的实现如下：
 ```swift
 protocol ImageCache {
     subscript(_ key: String) -> UIImage? { get set }
@@ -18,6 +19,30 @@ struct TemporaryImageCache: ImageCache {
     subscript(_ key: String) -> UIImage? {
         get { cache.object(forKey: key as NSString) }
         set { newValue == nil ? cache.removeObject(forKey: key as NSString) : cache.setObject(newValue!, forKey: key as NSString) }
+    }
+}
+```
+现在将图像缓存添加到环境中：
+```swift
+struct ImageCacheKey: EnvironmentKey {
+    static let defaultValue: ImageCache = TemporaryImageCache()
+}
+
+extension EnvironmentValues {
+    var imageCache: ImageCache {
+        get { self[ImageCacheKey.self] }
+        set { self[ImageCacheKey.self] = newValue }
+    }
+}
+```
+使用@Environment 属性包装器从环境中读取一个值：
+```swift
+struct TodoItemDetail: View {
+    let item: TodoItem
+    @Environment(\.imageCache) var cache: ImageCache
+    
+    var body: some View {
+        ...
     }
 }
 ```
