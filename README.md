@@ -7,7 +7,7 @@ SwiftUI 学习资料整理
 父视图 ==> 子视图 单向，使用初始化方法。
 祖先视图 ==> 子孙视图 双向，使用Environment，本质是应用范围内的字典对象。
 
-'''
+```swift
 protocol ImageCache {
     subscript(_ key: String) -> UIImage? { get set }
 }
@@ -20,4 +20,5 @@ struct TemporaryImageCache: ImageCache {
         set { newValue == nil ? cache.removeObject(forKey: key as NSString) : cache.setObject(newValue!, forKey: key as NSString) }
     }
 }
-'''
+```
+
