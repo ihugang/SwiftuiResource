@@ -47,10 +47,14 @@ struct TodoItemDetail: View {
 }
 ```
 3.子视图 ==> 父视图,使用绑定和回调
+
   单向：使用回调
+  
   双向：使用绑定
+  
   **回调** 
-  ```
+  
+  ```swift
   struct TodoListView: View {
     let items: [TodoItem]
     
