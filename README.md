@@ -4,8 +4,8 @@ SwiftUI 学习资料整理
 关于属性装饰器@State @Bingding @ObservedObject @EnvironmentObject [cnblogs](https://www.cnblogs.com/xiaoniuzai/p/11417123.html)
 
 ##View之间通讯模式## [英文](https://www.vadimbulavin.com/passing-data-between-swiftui-views/)
-父视图 ==> 子视图 单向，使用初始化方法。
-祖先视图 ==> 子孙视图 双向，使用Environment，本质是应用范围内的字典对象。
+1.父视图 ==> 子视图 单向，使用初始化方法。
+2.祖先视图 ==> 子孙视图 双向，使用Environment，本质是应用范围内的字典对象。
 
 让我们看看如何将图像缓存注入环境。它的实现如下：
 ```swift
@@ -46,4 +46,32 @@ struct TodoItemDetail: View {
     }
 }
 ```
+3.子视图 ==> 父视图,使用绑定和回调
+  单向：使用回调
+  双向：使用绑定
+  **回调** 
+  ```
+  struct TodoListView: View {
+    let items: [TodoItem]
+    
+    var body: some View {
+        List(items) { item in
+            TodoItemView(item: item) {
+                print("Detail selected", item)
+            }
+        }
+    }
+}
+
+struct TodoItemView: View {
+    let onDetail: () -> Void
+    ...
+
+    var body: some View {
+        ...
+        Button(action: onDetail) { ... }
+    }
+}
+```
+
 
